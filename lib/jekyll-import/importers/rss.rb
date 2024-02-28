@@ -33,6 +33,7 @@ module JekyllImport
       #
       # Returns nothing.
       def self.process(options)
+        limit_number_of_items = 10
         source = options.fetch("source")
 
         content = ""
@@ -41,7 +42,8 @@ module JekyllImport
 
         raise "There doesn't appear to be any RSS items at the source (#{source}) provided." unless rss
 
-        rss.items.each do |item|
+        rss.items.each_with_index do |item, index|
+          break if index >= limit_number_of_items
           write_rss_item(item, options)
         end
       end
