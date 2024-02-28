@@ -87,7 +87,7 @@ module JekyllImport
 
           if audio
             f.puts <<~HTML
-              <audio controls="">
+              <audio controls preload="auto">
                 <source src="#{audio}" type="audio/mpeg">
                 Your browser does not support the audio element.
               </audio>
