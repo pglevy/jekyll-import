@@ -64,6 +64,7 @@ module JekyllImport
           "title"         => item.title,
           "canonical_url" => (canonical_link ? item.link : nil),
           "tag"           => get_tags(item, options),
+          "channel_image" => rss.channel.image.url
         }.compact
 
         frontmatter.each do |value|
