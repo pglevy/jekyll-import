@@ -39,16 +39,17 @@ module JekyllImport
         content = ""
         URI.open(source) { |s| content = s.read }
         rss = ::RSS::Parser.parse(content, false)
+        channel_image = rss.channel.image.url
 
         raise "There doesn't appear to be any RSS items at the source (#{source}) provided." unless rss
 
         rss.items.each_with_index do |item, index|
           break if index >= limit_number_of_items
-          write_rss_item(item, options)
+          write_rss_item(item, options, channel_image)
         end
       end
 
-      def self.write_rss_item(item, options)
+      def self.write_rss_item(item, options, channel_image)
         frontmatter = options.fetch("frontmatter", [])
         body = options.fetch("body", ["description"])
         render_audio = options.fetch("render_audio", false)
@@ -64,7 +65,7 @@ module JekyllImport
           "title"         => item.title,
           "canonical_url" => (canonical_link ? item.link : nil),
           "tag"           => get_tags(item, options),
-          "channel_image" => rss.channel.image.url
+          "channel_image" => channel_image
         }.compact
 
         frontmatter.each do |value|
