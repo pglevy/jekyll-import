@@ -39,7 +39,7 @@ module JekyllImport
         content = ""
         URI.open(source) { |s| content = s.read }
         rss = ::RSS::Parser.parse(content, false)
-        if rss.channel.image.url.nil?
+        if rss&.channel&.image&.url.nil?
           channel_image = ""
         else
           channel_image = rss.channel.image.url
